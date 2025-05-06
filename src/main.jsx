@@ -7,6 +7,7 @@ import MainContent from './components/MainContent';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router";
 import Connect from './components/Connect';
 import Projects from './components/Projects';
+import Resume from './components/Resume';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="connect" element={<Connect />} />
       <Route path="projects" element={<Projects />} />
+      <Route path="/resume" element={<Resume />} />
     </Route>
   )
 );

@@ -1,55 +1,75 @@
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import React from 'react';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Navbar = () => {
+const navLinks = [
+  { name: 'Home', to: '/' },
+  { name: 'About', to: '/about' },
+  { name: 'Connect', to: '/connect' },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
   return (
-    <>
-      <div className="relative z-50">
-      <div className="container mx-auto flex justify-end pt-8">
-        <ul className="flex space-x-6">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "text-orange-700 font-bold" : "text-gray-700 hover:text-red-500"
-              }
-            >
-              Home
-            </NavLink>
-          </li>
-          <li className="border-l pl-5 pr-5">
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                isActive ? "text-orange-700 font-bold" : "text-gray-700 hover:text-red-500"
-              }
-            >
-              About
-            </NavLink>
-          </li>
-          <li className="pl-5 pr-10 border-l">
-            <NavLink
-              to="/connect"
-              className={({ isActive }) =>
-                isActive ? "text-orange-700 font-bold" : "text-gray-700 hover:text-red-500"
-              }
-            >
-              Connect
-            </NavLink>
-          </li>
+    <nav className=" w-full z-50 bg-white">
+      <div className="container mx-auto flex items-center justify-end p-4">
+        {/* Desktop Links */}
+        <ul className="hidden md:flex space-x-8">
+          {navLinks.map((link) => (
+            <li key={link.to}>
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  isActive
+                    ? 'border-b-2 border-gray-800 pb-1 font-semibold text-gray-800'
+                    : 'text-gray-800 hover:text-gray-600 transition-colors'
+                }
+              >
+                {link.name}
+              </NavLink>
+            </li>
+          ))}
         </ul>
+
+        {/* Mobile Hamburger */}
+        <button className="md:hidden text-gray-800" onClick={toggleMenu} aria-label="Toggle menu">
+          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
       </div>
 
-      {/* Profile Section (This does NOT affect routing) */}
-      <div className="flex items-center space-x-3 p-5 rounded-lg -mt-12">
-        <div className="w-8 h-8 bg-yellow-500 rounded-full"></div>
-        <h1 className="text-xl font-bold">
-          Lalit Chaudhary <span className="text-sm font-normal text-gray-600">Web Developer</span>
-        </h1>
-      </div>
-      </div>
-    </>
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="md:hidden bg-white overflow-hidden"
+          >
+            <ul className="flex flex-col space-y-4 p-6">
+              {navLinks.map((link) => (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'block text-lg font-semibold text-gray-800'
+                        : 'block text-lg text-gray-800 hover:text-gray-600 transition-colors'
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
-};
-
-export default Navbar;
+}

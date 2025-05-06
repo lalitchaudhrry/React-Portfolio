@@ -1,7 +1,8 @@
 import React from 'react';
-
+import PageWrapper from "./PageWrapper";
 const About = () => {
   return (
+    <PageWrapper>
     <section className="flex flex-col items-center text-center px-6">
       <div className="md:w-1/2 flex justify-center">
         <img 
@@ -26,6 +27,7 @@ const About = () => {
         </p>
       </div>
     </section>
+    </PageWrapper>
   );
 }
 
